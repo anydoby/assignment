@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import assigment.service.XmlStore;
 import assigment.ui.components.KnowledgeCell;
 import assigment.ui.model.KnowledgeTableNode;
-import assigment.ui.model.RootNode;
+import assigment.ui.model.StubUINode;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
@@ -39,13 +39,8 @@ public class MainController
     @FXML
     public void initialize() throws Exception
     {
-        knowledgeTree.setRoot(new TreeItem<KnowledgeTableNode>(new RootNode()));
+        knowledgeTree.setRoot(new TreeItem<KnowledgeTableNode>(new StubUINode("Root stub")));
         knowledgeTree.setCellFactory(view -> new KnowledgeCell(view));
-    }
-
-    public void showNodeContext()
-    {
-
     }
 
     /**
