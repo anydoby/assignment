@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="assigment.ui.MainController">
+  <center>
+    <TreeView fx:id="knowledgeTree" onContextMenuRequested="#showNodeContext" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+  </center>
+</BorderPane>
