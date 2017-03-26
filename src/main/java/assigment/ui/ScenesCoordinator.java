@@ -5,6 +5,8 @@ import static java.util.prefs.Preferences.userNodeForPackage;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
+import javax.xml.bind.JAXBException;
+
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 
 import assigment.service.XmlStore;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +32,7 @@ import javafx.stage.Stage;
 @Configuration
 @Lazy
 @ComponentScan("assigment.ui")
+@EnableSpringConfigured
 public class ScenesCoordinator implements InitializingBean, DisposableBean
 {
 
@@ -38,7 +42,7 @@ public class ScenesCoordinator implements InitializingBean, DisposableBean
     private int lastY;
 
     private Stage primaryStage;
-    private String notesPath;
+    private String lastPath;
 
     @Autowired
     ApplicationContext ctx;
@@ -89,7 +93,7 @@ public class ScenesCoordinator implements InitializingBean, DisposableBean
         preferences.putInt("last.height", (int) primaryStage.getHeight());
         preferences.putInt("last.x", (int) primaryStage.getX());
         preferences.putInt("last.y", (int) primaryStage.getY());
-        preferences.put("last.file", notesPath);
+        preferences.put("last.file", lastPath);
     }
 
     @Override
@@ -100,16 +104,27 @@ public class ScenesCoordinator implements InitializingBean, DisposableBean
         height = preferences.getInt("last.height", 600);
         lastX = preferences.getInt("last.x", -1);
         lastY = preferences.getInt("last.y", -1);
-        notesPath = preferences.get("last.file", "./knowledgebase.xml");
+        lastPath = preferences.get("last.file", "./knowledgebase.xml");
+    }
+
+    public String getLastPath()
+    {
+        return lastPath;
     }
 
     /**
      * @return the storage component
+     * @throws JAXBException
      */
     @Bean
-    public XmlStore store()
+    public XmlStore store() throws JAXBException
     {
         return new XmlStore();
+    }
+
+    public void setLastPath(String absolutePath)
+    {
+        lastPath = absolutePath;
     }
 
 }

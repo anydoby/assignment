@@ -1,19 +1,31 @@
 package assigment.model;
 
-import javax.xml.bind.annotation.XmlSeeAlso;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Represents nodes.
+ * Represents nodes; any type can fit in.
  * 
  * @author sergey
  *
  */
-@XmlSeeAlso(
-{ StubNode.class, ConditionNode.class, ActionNode.class })
-public abstract class Node
+public class Node
 {
 
+    private static final int REMOVED = -1;
+
+    private NodeType type;
+
     private String content;
+
+    private List<Node> node = new ArrayList<>();
+
+    private int depth;
+
+    private Node parent;
 
     /**
      * @return text content of the node
@@ -31,4 +43,135 @@ public abstract class Node
         this.content = content;
     }
 
+    @XmlAttribute
+    public NodeType getType()
+    {
+        return type;
+    }
+
+    public void setType(NodeType type)
+    {
+        this.type = type;
+    }
+
+    public List<Node> getNode()
+    {
+        return node;
+    }
+
+    public void setNode(List<Node> node)
+    {
+        this.node = node;
+    }
+
+    /**
+     * Creates a stub with the specified content
+     * 
+     * @param content
+     * @return the new node
+     */
+    public static Node stub(String content)
+    {
+        Node newNode = newNode(content);
+        newNode.setType(NodeType.stub);
+        return newNode;
+    }
+
+    private static Node newNode(String content)
+    {
+        Node n = new Node();
+        n.setContent(content);
+        return n;
+    }
+
+    /**
+     * Creates a condition with the specified content
+     * 
+     * @param content
+     * @return the new node
+     */
+    public static Node condition(String content)
+    {
+        Node newNode = newNode(content);
+        newNode.setType(NodeType.condition);
+        return newNode;
+    }
+
+    /**
+     * Creates action node with the specified content
+     * 
+     * @param content
+     * @return the new node
+     */
+    public static Node action(String content)
+    {
+        Node newNode = newNode(content);
+        newNode.setType(NodeType.action);
+        return newNode;
+    }
+
+    @XmlTransient
+    public int getDepth()
+    {
+        return depth;
+    }
+
+    public void setDepth(int depth)
+    {
+        this.depth = depth;
+    }
+
+    @XmlTransient
+    public Node getParent()
+    {
+        return parent;
+    }
+
+    public void setParent(Node parent)
+    {
+        this.parent = parent;
+    }
+
+    /**
+     * Adds a child node and returns this.
+     * 
+     * @param node
+     * @return this node
+     */
+    public Node addChild(Node node)
+    {
+        node.setParent(this);
+        node.setDepth(depth + 1);
+        getNode().add(node);
+        return this;
+    }
+
+    @Override
+    public String toString()
+    {
+        return type + "(" + depth + ")" + (content != null ? "'" + content + "'" : "") + (node.isEmpty() ? "" : node);
+    }
+
+    /**
+     * Removes this node from the parent if it is attached.
+     */
+    public void remove()
+    {
+        if (parent != null)
+        {
+            parent.getNode().remove(this);
+            parent = null;
+            depth = REMOVED;
+        }
+    }
+
+    /**
+     * Returns <code>true</code> for nodes that were removed from parent by invoking {@link #remove()}.
+     * 
+     * @return <code>true</code> if node was removed
+     */
+    public boolean isRemoved()
+    {
+        return depth == REMOVED;
+    }
 }

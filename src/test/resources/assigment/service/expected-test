@@ -1,0 +1,17 @@
+[stub(0)'
+      Stub1
+    '[stub(0)'
+        Stub2
+      '[stub(0)'
+          Stub3
+        ']], condition(0)'
+      A
+    '[action(0)'
+        B1
+      '[action(0)'
+          B11
+        '], action(0)'
+        B2
+      '[action(0)'
+          B21
+        ']]]

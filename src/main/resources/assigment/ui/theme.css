@@ -1,0 +1,40 @@
+.stub {
+	-fx-background-color: #c0d3ff;
+}
+.stub:hover {
+	-fx-background-color: #c0d300;
+}
+.condition {
+	-fx-background-color: #67d252;
+}
+.condition:hover {
+	-fx-background-color: #c0d300;
+}
+
+.action {
+	-fx-background-color: #ffa7ed;
+}
+.action:hover {
+	-fx-background-color: #c0d300;
+}
+
+.knowledge-table {
+    -fx-background-color: #827d7d;
+}
+
+.welcome-label {
+	-fx-border-color: #939393; 
+    -fx-border-width: 3 ; 
+    -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;
+    -fx-label-padding: 15; 
+	-fx-text-fill: #939393; 
+}
+
+.outline {
+	-fx-border-color: blue; 
+    -fx-border-width: 1; 
+}
+
+.error {
+    -fx-background-color: #ff0000;
+}

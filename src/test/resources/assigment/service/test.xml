@@ -1,0 +1,42 @@
+<knowledgetable>
+  <node type="stub">
+    <content>
+      Stub1
+    </content>
+    <node type="stub">
+      <content>
+        Stub2
+      </content>
+      <node type="stub">
+        <content>
+          Stub3
+        </content>
+      </node>
+    </node>
+  </node>
+  <node type="condition">
+    <content>
+      A
+    </content>
+    <node type="action">
+      <content>
+        B1
+      </content>
+      <node type="action">
+        <content>
+          B11
+        </content>
+      </node>
+    </node>
+    <node type="action">
+      <content>
+        B2
+      </content>
+      <node type="action">
+        <content>
+          B21
+        </content>
+      </node>
+    </node>
+  </node>
+</knowledgetable>
