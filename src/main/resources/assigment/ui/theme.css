@@ -36,5 +36,6 @@
 }
 
 .error {
-    -fx-background-color: #ff0000;
+    -fx-border-color: #ff0000;
+    -fx-border-width: 3; 
 }

@@ -9,6 +9,17 @@ package assigment.model;
 public enum NodeType
 {
 
-    stub, condition, action
+    /**
+     * a stub node
+     */
+    stub,
+    /**
+     * a condition
+     */
+    condition,
+    /**
+     * an action
+     */
+    action
 
 }

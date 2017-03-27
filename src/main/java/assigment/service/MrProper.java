@@ -27,18 +27,36 @@ public class MrProper
 
     private KnowledgeTable table;
 
+    /**
+     * Creates new instance.
+     * 
+     * @param table
+     */
     public MrProper(KnowledgeTable table)
     {
         this.table = table;
     }
 
+    /**
+     * @return the table this class is managing
+     */
     public KnowledgeTable getTable()
     {
         return table;
     }
 
+    /**
+     * Auto trim mode. Depending on the operation performed on the table you will want to either cut unwanted nodes or
+     * add some missing.
+     * 
+     * @author sergey
+     *
+     */
     public enum Mode
     {
+        /**
+         * will add missing nodes
+         */
         up
         {
             @Override
@@ -54,6 +72,9 @@ public class MrProper
             }
 
         },
+        /**
+         * will remove extra nodes
+         */
         down
         {
             @Override
@@ -98,9 +119,9 @@ public class MrProper
     }
 
     /**
-     * If maxDepth is -1 then maximum depth of existing leaves will be applied. If the table is empty, nothing is done.
+     * Will add/remove the node to the table depening on the mode.
      * 
-     * @param maxDepth
+     * @param mode the mode to take into account
      * @return <code>true</code> if structure was affected
      */
     public boolean normalize(Mode mode)
@@ -137,7 +158,7 @@ public class MrProper
         return normalized;
     }
 
-    private void growAndTrim(int targetDepth, List<Node> leaves)
+    private static void growAndTrim(int targetDepth, List<Node> leaves)
     {
         // iteratively cut extra leaves off
         leaves.stream().filter(l -> l.getDepth() > targetDepth).forEach(n -> n.getParent().getNode().remove(n));
@@ -177,7 +198,7 @@ public class MrProper
      * This is not listed in the specification, but without it we may have a table with only one stub and no condition
      * which does not make sense
      */
-    private static void atLeastOneConditionForTopLevelStub(KnowledgeTable table)
+    static void atLeastOneConditionForTopLevelStub(KnowledgeTable table)
     {
         if (table.getNode().size() == 1)
         {
@@ -274,6 +295,9 @@ public class MrProper
         }
     }
 
+    /**
+     * @return the maximum level of nesting in the knowledge table
+     */
     public int getMaxDepth()
     {
         OptionalInt max = depths(getLeaves()).max();

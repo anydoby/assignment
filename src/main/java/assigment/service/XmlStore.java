@@ -23,13 +23,18 @@ public class XmlStore
 
     private JAXBContext context;
 
+    /**
+     * Creates new store
+     * 
+     * @throws JAXBException
+     */
     public XmlStore() throws JAXBException
     {
         context = JAXBContext.newInstance(KnowledgeTable.class);
     }
 
     /**
-     * Stores the knowledge table to the stream
+     * Stores the knowledge table to the stream.
      * 
      * @param table
      * @param out
@@ -52,7 +57,6 @@ public class XmlStore
     {
         Unmarshaller unmarshaller = context.createUnmarshaller();
         return unmarshaller.unmarshal(new StreamSource(in), KnowledgeTable.class).getValue();
-
     }
 
 }

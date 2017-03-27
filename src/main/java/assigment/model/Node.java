@@ -43,22 +43,38 @@ public class Node
         this.content = content;
     }
 
+    /**
+     * @return the node type
+     */
     @XmlAttribute
     public NodeType getType()
     {
         return type;
     }
 
+    /**
+     * Sets the node type
+     * 
+     * @param type
+     */
     public void setType(NodeType type)
     {
         this.type = type;
     }
 
+    /**
+     * @return child nodes
+     */
     public List<Node> getNode()
     {
         return node;
     }
 
+    /**
+     * Sets the nodes list
+     * 
+     * @param node
+     */
     public void setNode(List<Node> node)
     {
         this.node = node;
@@ -110,23 +126,43 @@ public class Node
         return newNode;
     }
 
+    /**
+     * This property is not serialized.
+     * 
+     * @return level of nesting of this node
+     */
     @XmlTransient
     public int getDepth()
     {
         return depth;
     }
 
+    /**
+     * Sets the level of nesting
+     * 
+     * @param depth
+     */
     public void setDepth(int depth)
     {
         this.depth = depth;
     }
 
+    /**
+     * This property is not serialized.
+     * 
+     * @return the parent node
+     */
     @XmlTransient
     public Node getParent()
     {
         return parent;
     }
 
+    /**
+     * Sets the parent to this node.
+     * 
+     * @param parent
+     */
     public void setParent(Node parent)
     {
         this.parent = parent;

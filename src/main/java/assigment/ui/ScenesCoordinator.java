@@ -107,6 +107,9 @@ public class ScenesCoordinator implements InitializingBean, DisposableBean
         lastPath = preferences.get("last.file", "./knowledgebase.xml");
     }
 
+    /**
+     * @return the last file that was saved or opened
+     */
     public String getLastPath()
     {
         return lastPath;
@@ -122,6 +125,11 @@ public class ScenesCoordinator implements InitializingBean, DisposableBean
         return new XmlStore();
     }
 
+    /**
+     * Sets the last path.
+     * 
+     * @param absolutePath
+     */
     public void setLastPath(String absolutePath)
     {
         lastPath = absolutePath;

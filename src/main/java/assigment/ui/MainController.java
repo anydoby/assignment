@@ -3,7 +3,6 @@ package assigment.ui;
 import static assigment.model.Node.stub;
 import static assigment.service.MrProper.Mode.down;
 import static assigment.service.MrProper.Mode.up;
-import static java.lang.Double.POSITIVE_INFINITY;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +36,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -106,7 +106,10 @@ public class MainController
         MrProper mrProper = tableModel.get();
         LOG.info("Re-rendering new table state");
         LOG.info(mrProper.getTable().toString());
+
+        ScrollPane scrollPane = new ScrollPane();
         GridPane gridPane = new GridPane();
+        scrollPane.setContent(gridPane);
         gridPane.getStyleClass().add("outline");
 
         int depthMax = mrProper.getMaxDepth() + 1;
@@ -127,24 +130,29 @@ public class MainController
                 Label label = new Label();
                 Node node = nodes.get(column);
                 JavaBeanStringProperty contentText = contentProperty(node);
+                // simple validation
+                label.textProperty().addListener((obs, o, n) -> {
+                    label.getStyleClass().remove("error");
+                    if (n == null)
+                    {
+                        label.getStyleClass().add("error");
+                    }
+                });
+                label.getStyleClass().add("outline");
                 label.textProperty().bind(contentText);
                 label.setUserData(node);
                 label.getStyleClass().add(node.getType().name());
-                label.getStyleClass().add("outline");
                 label.setOnMouseClicked(e -> rebindContent(contentText));
                 label.setContextMenu(menuFor(node));
 
-                GridPane.setFillWidth(label, true);
-                GridPane.setFillHeight(label, true);
-
                 // use the rest of the columns for the last component
                 int colspan = last(column, nodes) ? maxLayerLength - column : 1;
-                label.setMinSize(100 * colspan, 30);
-                label.setMaxSize(POSITIVE_INFINITY, POSITIVE_INFINITY);
+                label.setMaxSize(100 * colspan, 50);
+                label.setMinSize(100 * colspan, 50);
                 gridPane.add(label, column, layer, colspan, 1);
             }
         }
-        pane.getChildren().add(gridPane);
+        pane.getChildren().add(scrollPane);
     }
 
     private ContextMenu menuFor(Node node)
@@ -213,7 +221,7 @@ public class MainController
         return item;
     }
 
-    private JavaBeanStringProperty contentProperty(Node node)
+    private static JavaBeanStringProperty contentProperty(Node node)
     {
         try
         {
@@ -243,6 +251,9 @@ public class MainController
         return nodes.size() - 1 == column;
     }
 
+    /**
+     * This action is performed when the first stub is created.
+     */
     public void createTable()
     {
         KnowledgeTable table = new KnowledgeTable();
@@ -250,6 +261,13 @@ public class MainController
         tableModel.set(new MrProper(table));
     }
 
+    /**
+     * Shows an open table dialog
+     * 
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws JAXBException
+     */
     @Catch
     public void open() throws FileNotFoundException, IOException, JAXBException
     {
@@ -258,12 +276,17 @@ public class MainController
         File selectedFile = chooser.showOpenDialog(null);
         if (selectedFile != null)
         {
-            navigator.setLastPath(selectedFile.getAbsolutePath());
-            try (FileInputStream fis = new FileInputStream(selectedFile))
-            {
-                KnowledgeTable table = store.load(new FileInputStream(selectedFile));
-                tableModel.set(new MrProper(table));
-            }
+            open(selectedFile);
+        }
+    }
+
+    private void open(File selectedFile) throws JAXBException, FileNotFoundException, IOException
+    {
+        navigator.setLastPath(selectedFile.getAbsolutePath());
+        try (FileInputStream fis = new FileInputStream(selectedFile))
+        {
+            KnowledgeTable table = store.load(new FileInputStream(selectedFile));
+            tableModel.set(new MrProper(table));
         }
     }
 
@@ -278,6 +301,13 @@ public class MainController
         return chooser;
     }
 
+    /**
+     * Shows save dialog
+     * 
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws JAXBException
+     */
     @Catch
     public void save() throws FileNotFoundException, IOException, JAXBException
     {

@@ -16,12 +16,25 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
+/**
+ * This thing will catch any errors thrown from the methods marked with the {@link Catch} annotation and display them in
+ * a nice GUI.
+ * 
+ * @author sergey
+ *
+ */
 @Aspect
 public class UIErrorAspect
 {
 
     Logger LOG = LoggerFactory.getLogger(getClass());
 
+    /**
+     * Delegates to the join point and handles errors.
+     * 
+     * @param p
+     * @return method result if any
+     */
     @Around("execution(@Catch * * (..))")
     public Object execute(final ProceedingJoinPoint p)
     {
